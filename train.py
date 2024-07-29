@@ -121,7 +121,7 @@ def main():
 
     store_samples(train_loader, 'images/augmentation.png', number_of_images=20)
 
-    model = models.ResNet18(num_classes=2)
+    model = models.ResNet18(num_classes=2).to(device)
 
     criterion = nn.CrossEntropyLoss()
 
