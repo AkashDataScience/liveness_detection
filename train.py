@@ -131,7 +131,7 @@ def main():
     scheduler_lr = lr_scheduler.SequentialLR(optimizer, [scheduler_linear,scheduler_cosine],milestones=[10])
 
     train_losses, train_acc, test_losses, test_acc = start_training(
-        args.epochs, model, device, train_loader, test_loader, optimizer, criterion,
+        args.epochs, model, device, train_loader, val_loader, optimizer, criterion,
         scheduler_lr
     )
 
