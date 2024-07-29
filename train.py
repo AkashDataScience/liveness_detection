@@ -64,10 +64,10 @@ def _test(model, device, test_loader, criterion, test_losses, test_acc):
         for batch_idx, (data, target) in enumerate(test_loader):
             data, target = data.to(device), target.to(device) 
 
-            output = model(data) 
-            test_loss += criterion(output, target, reduction='sum').item() 
+            pred = model(data) 
+            test_loss += criterion(pred, target).item() 
 
-            correct += GetCorrectPredCount(output, target)
+            correct += GetCorrectPredCount(pred, target)
 
     test_loss /= len(test_loader.dataset)
     test_acc.append(100. * correct / len(test_loader.dataset))
