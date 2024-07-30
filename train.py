@@ -147,9 +147,9 @@ def main():
     criterion = nn.CrossEntropyLoss()
 
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-    scheduler_linear = lr_scheduler.LinearLR(optimizer, start_factor=0.01, total_iters=10)
+    scheduler_linear = lr_scheduler.LinearLR(optimizer, start_factor=0.01, total_iters=args.epochs)
     scheduler_cosine = lr_scheduler.CosineAnnealingLR(optimizer, T_max=490, eta_min=args.lr/100)
-    scheduler_lr = lr_scheduler.SequentialLR(optimizer, [scheduler_linear,scheduler_cosine],milestones=[10])
+    scheduler_lr = lr_scheduler.SequentialLR(optimizer, [scheduler_linear,scheduler_cosine],milestones=[args.epochs])
 
     train_losses, train_acc, test_losses, test_acc = start_training(
         args.epochs, model, device, train_loader, val_loader, optimizer, criterion,
