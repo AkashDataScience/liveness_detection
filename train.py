@@ -6,9 +6,12 @@ import pandas as pd
 from torch import nn
 from tqdm import tqdm
 from torch.optim import lr_scheduler
+from sklearn.metrics import classification_report
 from dataset import get_train_data_loader, get_val_test_data_loader
 from visualize import store_samples, store_accuracy_loss_graphs, store_classification_plot
 from utils import get_train_val_test_split, extract_frames_and_create_csv, get_classification_data
+
+CLASS_NAMES= ['Fake', 'Real']
 
 def get_args():
     parser = argparse.ArgumentParser(description='Liveness Detection - Zalo AI Challenge Training')
@@ -77,6 +80,24 @@ def _test(model, device, test_loader, criterion, test_losses, test_acc):
         test_loss, correct, len(test_loader.dataset),
         100. * correct / len(test_loader.dataset)))
     
+def test_model(model, device, test_loader):
+    model.eval()
+    target_list = []
+    pred_list = []
+
+    with torch.no_grad():
+        for batch_idx, (data, target) in enumerate(test_loader):
+            data, target = data.to(device), target.to(device) 
+
+            pred = model(data) 
+            target_list.extend(target.item())
+            pred_list.extend(pred.item())
+
+    test_report = classification_report(target_list, pred_list, target_names=CLASS_NAMES)
+
+    with open('test_resutls.txt', 'w') as f:
+        f.write(test_report)
+    
 def start_training(num_epochs, model, device, train_loader, test_loader, optimizer, criterion, scheduler):
     train_losses = []
     test_losses = []
@@ -134,6 +155,8 @@ def main():
         args.epochs, model, device, train_loader, val_loader, optimizer, criterion,
         scheduler_lr
     )
+
+    test_model(model, device, test_loader)
 
     store_accuracy_loss_graphs(train_losses, train_acc, test_losses, test_acc, 'images/metrics.png')
 
