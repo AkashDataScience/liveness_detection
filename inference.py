@@ -70,7 +70,7 @@ def inference_on_video(video_path, model):
 def infer():
     args = get_args()
     model = models.ResNet18(num_classes=2).to(device)
-    model = model.load_state_dict(torch.load(args.model_path))
+    model.load_state_dict(torch.load(args.model_path))
     if args.image:
         inference_on_image(args.data_path, model)
     else:
