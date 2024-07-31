@@ -90,8 +90,8 @@ def test_model(model, device, test_loader):
             data, target = data.to(device), target.to(device) 
 
             pred = model(data) 
-            target_list.extend(target.item())
-            pred_list.extend(pred.item())
+            target_list.extend(target.tolist())
+            pred_list.extend(pred.tolist())
 
     test_report = classification_report(target_list, pred_list, target_names=CLASS_NAMES)
 
