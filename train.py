@@ -90,6 +90,7 @@ def test_model(model, device, test_loader):
             data, target = data.to(device), target.to(device) 
 
             pred = model(data) 
+            pred=pred.argmax(dim=1,keepdim=True)
             target_list.extend(target.tolist())
             pred_list.extend(pred.tolist())
 
