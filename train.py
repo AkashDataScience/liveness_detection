@@ -96,7 +96,7 @@ def test_model(model, device, test_loader):
 
     test_report = classification_report(target_list, pred_list, target_names=CLASS_NAMES)
 
-    with open('test_resutls.txt', 'w') as f:
+    with open('test_results.txt', 'w') as f:
         f.write(test_report)
     
 def start_training(num_epochs, model, device, train_loader, test_loader, optimizer, criterion, scheduler):
